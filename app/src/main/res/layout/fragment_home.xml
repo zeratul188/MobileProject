@@ -21,6 +21,19 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="퀴즈"
+            android:background="@drawable/buttonstyle"
+            android:layout_marginRight="3dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnStudy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="공부"
+            android:layout_marginLeft="3dp"
+            android:textColor="#f0f0f0"
+            android:background="@drawable/corebuttonstyle"
+            android:textStyle="bold"
             android:textSize="20sp"/>
     </LinearLayout>
 
