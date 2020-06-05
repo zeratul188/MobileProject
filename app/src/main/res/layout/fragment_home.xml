@@ -11,6 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
@@ -40,11 +41,11 @@
             android:layout_marginRight="3dp"
             android:textSize="20sp"/>
         <Button
-            android:id="@+id/btnAdd"
+            android:id="@+id/btnStudy"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="추가"
+            android:text="공부"
             android:layout_marginLeft="3dp"
             android:textColor="#f0f0f0"
             android:background="@drawable/corebuttonstyle"

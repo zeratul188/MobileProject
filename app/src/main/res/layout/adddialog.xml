@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="20dp"
+    android:background="@drawable/customdialog">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추가할 단어를 입력하십시오."
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp"
+        android:textColor="#222222"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="영어 뜻 : "
+                android:textStyle="bold"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                android:textColor="#222222"/>
+            <EditText
+                android:id="@+id/edtEnglish"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:hint="영어"
+                android:textSize="20sp"
+                android:background="@drawable/customedit"
+                android:textColor="#222222"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="한국 뜻 : "
+                android:textStyle="bold"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                android:textColor="#222222"/>
+            <EditText
+                android:id="@+id/edtKorean"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:hint="한글"
+                android:textSize="20sp"
+                android:background="@drawable/customedit"
+                android:textColor="#222222"/>
+        </TableRow>
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#9b3232"
+            android:layout_marginRight="5dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="추가"
+            android:background="@drawable/corebuttonstyle"
+            android:textColor="#f0f0f0"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</LinearLayout>
