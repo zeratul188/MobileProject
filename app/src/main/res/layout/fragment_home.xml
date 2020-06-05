@@ -6,10 +6,24 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <ListView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="#9b3232"
+            app:fabSize="normal"
+            android:src="@drawable/add_foreground"/>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,15 +35,16 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="퀴즈"
+            android:textColor="#9b3232"
             android:background="@drawable/buttonstyle"
             android:layout_marginRight="3dp"
             android:textSize="20sp"/>
         <Button
-            android:id="@+id/btnStudy"
+            android:id="@+id/btnAdd"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="공부"
+            android:text="추가"
             android:layout_marginLeft="3dp"
             android:textColor="#f0f0f0"
             android:background="@drawable/corebuttonstyle"
