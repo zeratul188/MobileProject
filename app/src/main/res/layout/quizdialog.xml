@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="맞추실 언어를 선택하십시오."
+        android:textColor="#222222"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp"/>
+
+    <RadioGroup
+        android:id="@+id/rgLanguage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rdoEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영어"
+            android:textSize="20sp"
+            android:textColor="#222222"
+            android:layout_marginRight="10dp"
+            android:checked="true"
+            android:buttonTint="#9b3232"
+            android:textStyle="bold"/>
+        <RadioButton
+            android:id="@+id/rdoKorean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="한국어"
+            android:textSize="20sp"
+            android:textColor="#222222"
+            android:buttonTint="#9b3232"
+            android:textStyle="bold"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="종료"
+            android:background="@drawable/buttonstyle"
+            android:textStyle="bold"
+            android:textColor="#9b3232"
+            android:layout_marginRight="5dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="시작"
+            android:background="@drawable/corebuttonstyle"
+            android:textStyle="bold"
+            android:textColor="#f0f0f0"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</LinearLayout>

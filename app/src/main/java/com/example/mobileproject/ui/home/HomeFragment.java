@@ -5,13 +5,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +42,11 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
+    private TimeThread tt = null;
+
     private ListView listView;
     private Button btnQuiz, btnStudy;
+    private boolean end;
 
     private AlertDialog alertDialog = null;
     private AlertDialog.Builder builder = null;
@@ -47,7 +54,18 @@ public class HomeFragment extends Fragment {
 
     private WordAdapter adapter;
     private ArrayList<Word> wordList;
-    private Word word;
+    private int questions;
+    private TextView txtQuestion, txtExam;
+
+    private int ok = 0, worse = 0;
+    private ArrayList<Word> ok_list;
+    private ArrayList<Word> worse_list;
+
+    private ArrayList<Word> tempList;
+
+    private Handler handler = null;
+
+    private int index;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,35 +102,13 @@ public class HomeFragment extends Fragment {
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FileOutputStream fos = null;
-                        ObjectOutputStream oos = null;
-
                         String korean = String.valueOf(edtKorean.getText());
                         String english = String.valueOf(edtEnglish.getText());
 
                         Word temp_word = new Word(korean, english);
                         wordList.add(temp_word);
 
-                        try {
-                            fos = getActivity().openFileOutput("word.obj", Context.MODE_PRIVATE);
-                            oos = new ObjectOutputStream(fos);
-                            for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
-                            oos.flush();
-                            toast(english+"("+korean+") 단어를 추가하였습니다.", true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            toast("단어 추가를 하지 못하였습니다.", false);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            toast(String.valueOf(e), false);
-                        } finally {
-                            try {
-                                if (fos != null) fos.close();
-                                if (oos != null) oos.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        saveItem(english, korean);
 
                         onStart();
                         alertDialog.dismiss();
@@ -128,6 +124,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        handler = new Handler();
+
         listView = root.findViewById(R.id.listView);
         btnQuiz = root.findViewById(R.id.btnQuiz);
         btnStudy = root.findViewById(R.id.btnStudy);
@@ -136,7 +134,403 @@ public class HomeFragment extends Fragment {
         adapter = new WordAdapter(getActivity(), wordList);
         listView.setAdapter(adapter);
 
+        btnQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_view = getLayoutInflater().inflate(R.layout.quizdialog, null);
 
+                final RadioGroup rgLanguage = dialog_view.findViewById(R.id.rgLanguage);
+                final RadioButton rdoKorean = dialog_view.findViewById(R.id.rdoKorean);
+                final RadioButton rdoEnglish = dialog_view.findViewById(R.id.rdoEnglish);
+                final Button btnExit = dialog_view.findViewById(R.id.btnExit);
+                final Button btnStart = dialog_view.findViewById(R.id.btnStart);
+
+                btnExit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnStart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        end = false;
+
+                        alertDialog.dismiss();
+                        questions = wordList.size();
+
+                        worse = 0;
+                        ok = 0;
+
+                        ok_list = new ArrayList<Word>();
+                        worse_list = new ArrayList<Word>();
+
+                        tempList = new ArrayList<Word>();
+                        for (int i = 0; i < wordList.size(); i++) tempList.add(wordList.get(i));
+
+                        index = (int)(Math.random()*123456789)%tempList.size();
+                        if (rdoEnglish.isChecked()) {
+                            dialog_view = getLayoutInflater().inflate(R.layout.quizdialog_korean, null);
+
+                            txtQuestion = dialog_view.findViewById(R.id.txtQuestion);
+                            final TextView txtTime = dialog_view.findViewById(R.id.txtTime);
+                            txtExam = dialog_view.findViewById(R.id.txtExam);
+                            final EditText edtResult = dialog_view.findViewById(R.id.edtResult);
+                            final Button btnExit = dialog_view.findViewById(R.id.btnExit);
+                            final Button btnPass = dialog_view.findViewById(R.id.btnPass);
+                            final Button btnNext = dialog_view.findViewById(R.id.btnNext);
+
+                            tt = new TimeThread(handler, 30, txtTime, HomeFragment.this);
+                            tt.setKoreaned(false);
+                            tt.start();
+
+                            txtQuestion.setText(tempList.get(index).getKorean());
+                            txtExam.setText(Integer.toString(questions));
+
+                            btnExit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                    if (tt != null)  tt.stopThread();
+                                    toast("퀴즈를 종료하였습니다.", false);
+                                }
+                            });
+
+                            btnPass.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (questions == 1) end = true;
+                                    if (!end) {
+                                        worse++;
+                                        worse_list.add(tempList.get(index));
+                                        nextWord(tempList, true, txtQuestion);
+                                        txtExam.setText(Integer.toString(questions));
+                                        tt.reset(30);
+                                    } else {
+                                        worse++;
+                                        worse_list.add(tempList.get(index));
+
+                                        tt.stopThread();
+                                        alertDialog.dismiss();
+                                        dialog_view = getLayoutInflater().inflate(R.layout.resultdialog, null);
+
+                                        final TextView txtOK = dialog_view.findViewById(R.id.txtOK);
+                                        final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
+                                        final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
+                                        final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+
+                                        txtOK.setText(Integer.toString(ok));
+                                        txtWorse.setText(Integer.toString(worse));
+
+                                        String result;
+                                        for (int i = 0; i < ok_list.size(); i++) {
+                                            result = ok_list.get(i).getEnglish()+"("+ok_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutOK, true);
+                                        }
+                                        for (int i = 0; i < worse_list.size(); i++) {
+                                            result = worse_list.get(i).getEnglish()+"("+worse_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutWorse, false);
+                                        }
+
+                                        builder = new AlertDialog.Builder(getActivity());
+                                        builder.setView(dialog_view);
+
+                                        builder.setPositiveButton("확인", null);
+
+                                        alertDialog = builder.create();
+                                        alertDialog.setCancelable(false);
+                                        alertDialog.show();
+                                    }
+                                    edtResult.setText("");
+                                }
+                            });
+
+                            btnNext.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (questions == 1) end = true;
+                                    if (!end) {
+                                        if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getEnglish())) {
+                                            ok++;
+                                            ok_list.add(tempList.get(index));
+                                        } else {
+                                            worse++;
+                                            worse_list.add(tempList.get(index));
+                                        }
+                                        nextWord(tempList, false, txtQuestion);
+                                        txtExam.setText(Integer.toString(questions));
+                                        tt.reset(30);
+                                        txtTime.setText("30");
+                                    } else {
+                                        if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getEnglish())) {
+                                            ok++;
+                                            ok_list.add(tempList.get(index));
+                                        } else {
+                                            worse++;
+                                            worse_list.add(tempList.get(index));
+                                        }
+                                        tt.stopThread();
+                                        alertDialog.dismiss();
+                                        dialog_view = getLayoutInflater().inflate(R.layout.resultdialog, null);
+
+                                        final TextView txtOK = dialog_view.findViewById(R.id.txtOK);
+                                        final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
+                                        final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
+                                        final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+
+                                        txtOK.setText(Integer.toString(ok));
+                                        txtWorse.setText(Integer.toString(worse));
+
+                                        String result;
+                                        for (int i = 0; i < ok_list.size(); i++) {
+                                            result = ok_list.get(i).getEnglish()+"("+ok_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutOK, true);
+                                        }
+                                        for (int i = 0; i < worse_list.size(); i++) {
+                                            result = worse_list.get(i).getEnglish()+"("+worse_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutWorse, false);
+                                        }
+
+                                        builder = new AlertDialog.Builder(getActivity());
+                                        builder.setView(dialog_view);
+
+                                        builder.setPositiveButton("확인", null);
+
+                                        alertDialog = builder.create();
+                                        alertDialog.setCancelable(false);
+                                        alertDialog.show();
+                                    }
+                                    edtResult.setText("");
+                                }
+                            });
+
+                            builder = new AlertDialog.Builder(getActivity());
+                            builder.setView(dialog_view);
+
+                            alertDialog = builder.create();
+                            alertDialog.setCancelable(false);
+                            alertDialog.show();
+                        } else {
+                            dialog_view = getLayoutInflater().inflate(R.layout.quizdialog_english, null);
+
+                            txtQuestion = dialog_view.findViewById(R.id.txtQuestion);
+                            final TextView txtTime = dialog_view.findViewById(R.id.txtTime);
+                            txtExam = dialog_view.findViewById(R.id.txtExam);
+                            final EditText edtResult = dialog_view.findViewById(R.id.edtResult);
+                            final Button btnExit = dialog_view.findViewById(R.id.btnExit);
+                            final Button btnPass = dialog_view.findViewById(R.id.btnPass);
+                            final Button btnNext = dialog_view.findViewById(R.id.btnNext);
+
+                            tt = new TimeThread(handler, 30, txtTime, HomeFragment.this);
+                            tt.setKoreaned(true);
+                            tt.start();
+
+                            txtQuestion.setText(tempList.get(index).getEnglish());
+                            txtExam.setText(Integer.toString(questions));
+
+                            btnExit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                    if (tt != null)  tt.stopThread();
+                                    toast("퀴즈를 종료하였습니다.", false);
+                                }
+                            });
+
+                            btnPass.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (questions == 1) end = true;
+                                    if (!end) {
+                                        worse++;
+                                        worse_list.add(tempList.get(index));
+                                        nextWord(tempList, true, txtQuestion);
+                                        txtExam.setText(Integer.toString(questions));
+                                        tt.reset(30);
+                                    } else {
+                                        worse++;
+                                        worse_list.add(tempList.get(index));
+
+                                        tt.stopThread();
+                                        alertDialog.dismiss();
+                                        dialog_view = getLayoutInflater().inflate(R.layout.resultdialog, null);
+
+                                        final TextView txtOK = dialog_view.findViewById(R.id.txtOK);
+                                        final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
+                                        final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
+                                        final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+
+                                        txtOK.setText(Integer.toString(ok));
+                                        txtWorse.setText(Integer.toString(worse));
+
+                                        String result;
+                                        for (int i = 0; i < ok_list.size(); i++) {
+                                            result = ok_list.get(i).getEnglish()+"("+ok_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutOK, true);
+                                        }
+                                        for (int i = 0; i < worse_list.size(); i++) {
+                                            result = worse_list.get(i).getEnglish()+"("+worse_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutWorse, false);
+                                        }
+
+                                        builder = new AlertDialog.Builder(getActivity());
+                                        builder.setView(dialog_view);
+
+                                        builder.setPositiveButton("확인", null);
+
+                                        alertDialog = builder.create();
+                                        alertDialog.setCancelable(false);
+                                        alertDialog.show();
+                                    }
+                                    edtResult.setText("");
+                                }
+                            });
+
+                            btnNext.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (questions == 1) end = true;
+                                    if (!end) {
+                                        if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getKorean())) {
+                                            ok++;
+                                            ok_list.add(tempList.get(index));
+                                        } else {
+                                            worse++;
+                                            worse_list.add(tempList.get(index));
+                                        }
+                                        nextWord(tempList, true, txtQuestion);
+                                        txtExam.setText(Integer.toString(questions));
+                                        tt.reset(30);
+                                        txtTime.setText("30");
+                                    } else {
+                                        if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getKorean())) {
+                                            ok++;
+                                            ok_list.add(tempList.get(index));
+                                        } else {
+                                            worse++;
+                                            worse_list.add(tempList.get(index));
+                                        }
+                                        tt.stopThread();
+                                        alertDialog.dismiss();
+                                        dialog_view = getLayoutInflater().inflate(R.layout.resultdialog, null);
+
+                                        final TextView txtOK = dialog_view.findViewById(R.id.txtOK);
+                                        final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
+                                        final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
+                                        final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+
+                                        txtOK.setText(Integer.toString(ok));
+                                        txtWorse.setText(Integer.toString(worse));
+
+                                        String result;
+                                        for (int i = 0; i < ok_list.size(); i++) {
+                                            result = ok_list.get(i).getEnglish()+"("+ok_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutOK, true);
+                                        }
+                                        for (int i = 0; i < worse_list.size(); i++) {
+                                            result = worse_list.get(i).getEnglish()+"("+worse_list.get(i).getKorean()+")";
+                                            addTextView(result, layoutWorse, false);
+                                        }
+
+                                        builder = new AlertDialog.Builder(getActivity());
+                                        builder.setView(dialog_view);
+
+                                        builder.setPositiveButton("확인", null);
+
+                                        alertDialog = builder.create();
+                                        alertDialog.setCancelable(false);
+                                        alertDialog.show();
+                                    }
+                                    edtResult.setText("");
+                                }
+                            });
+
+                            builder = new AlertDialog.Builder(getActivity());
+                            builder.setView(dialog_view);
+
+                            alertDialog = builder.create();
+                            alertDialog.setCancelable(false);
+                            alertDialog.show();
+                        }
+                    }
+                });
+
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setView(dialog_view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+
+            }
+        });
+
+        btnStudy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index = 0;
+                dialog_view = getLayoutInflater().inflate(R.layout.studydialog, null);
+
+                final TextView txtEnglish = dialog_view.findViewById(R.id.txtEnglish);
+                final TextView txtKorean = dialog_view.findViewById(R.id.txtKorean);
+                final Button btnExit = dialog_view.findViewById(R.id.btnExit);
+                final Button btnPervous = dialog_view.findViewById(R.id.btnPervous);
+                final Button btnNext = dialog_view.findViewById(R.id.btnNext);
+                final TextView txtNow = dialog_view.findViewById(R.id.txtNow);
+                final TextView txtMax = dialog_view.findViewById(R.id.txtMax);
+
+                txtEnglish.setText(wordList.get(index).getEnglish());
+                txtKorean.setText(wordList.get(index).getKorean());
+
+                txtNow.setText(Integer.toString(index+1));
+                txtMax.setText(Integer.toString(wordList.size()));
+
+                btnExit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnPervous.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        index--;
+                        txtNow.setText(Integer.toString(index+1));
+                        txtEnglish.setText(wordList.get(index).getEnglish());
+                        txtKorean.setText(wordList.get(index).getKorean());
+                        if (index == 0) {
+                            btnPervous.setEnabled(false);
+                            btnPervous.setTextColor(Color.parseColor("#666666"));
+                        }
+                        if (index < wordList.size()-1) btnNext.setEnabled(true);
+                    }
+                });
+
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        index++;
+                        txtNow.setText(Integer.toString(index+1));
+                        txtEnglish.setText(wordList.get(index).getEnglish());
+                        txtKorean.setText(wordList.get(index).getKorean());
+                        if (index == wordList.size()-1) btnNext.setEnabled(false);
+                        if (index > 0) {
+                            btnPervous.setEnabled(true);
+                            btnPervous.setTextColor(Color.parseColor("#9b3232"));
+                        }
+                    }
+                });
+
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setView(dialog_view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+            }
+        });
 
         return root;
     }
@@ -154,6 +548,61 @@ public class HomeFragment extends Fragment {
         if (longer) toast_length = Toast.LENGTH_LONG;
         else toast_length = Toast.LENGTH_SHORT;
         Toast.makeText(getActivity(), message, toast_length).show();
+    }
+
+    public void saveItem(String english, String korean) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            fos = getActivity().openFileOutput("word.obj", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
+            oos.flush();
+            toast(english+"("+korean+") 단어를 추가하였습니다.", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            toast("단어 추가를 하지 못하였습니다.", false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            toast(String.valueOf(e), false);
+        } finally {
+            try {
+                if (fos != null) fos.close();
+                if (oos != null) oos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void addTextView(String message, LinearLayout layout, boolean oked) {
+        TextView view = new TextView(getActivity());
+        view.setText(message);
+        view.setTextSize(20);
+        if (oked) view.setTextColor(Color.parseColor("#1A721A"));
+        else view.setTextColor(Color.parseColor("#C51313"));
+        layout.addView(view);
+    }
+
+    public void timeout(boolean koreaned) {
+        worse++;
+        worse_list.add(tempList.get(index));
+        nextWord(tempList, koreaned, txtQuestion);
+        txtExam.setText(Integer.toString(questions));
+        toast("시간이 초과되었습니다. 오답으로 처리됩니다.", false);
+    }
+
+    public void nextWord(ArrayList<Word> list, boolean koreaned, TextView view) {
+        list.remove(index);
+        if (!list.isEmpty()) {
+            index = (int)(Math.random()*123456789)%list.size();
+            if (koreaned) {
+                view.setText(list.get(index).getEnglish());
+            } else {
+                view.setText(list.get(index).getKorean());
+            }
+        }
+        questions--;
     }
 
     public void loadItem() {

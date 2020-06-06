@@ -57,31 +57,35 @@ public class WordAdapter extends BaseAdapter {
                 toast(wordList.get(index).getEnglish()+"("+wordList.get(index).getKorean()+") 단어가 삭제되었습니다.", false);
                 wordList.remove(position);
 
-                FileOutputStream fos = null;
-                ObjectOutputStream oos = null;
-
-                try {
-                    fos = context.openFileOutput("word.obj", Context.MODE_PRIVATE);
-                    oos = new ObjectOutputStream(fos);
-                    for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
-                    oos.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(String.valueOf(e), false);
-                } finally {
-                    try {
-                        if (fos != null) fos.close();
-                        if (oos != null) oos.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                refreshItem();
 
                 notifyDataSetChanged();
             }
         });
 
         return convertView;
+    }
+
+    public void refreshItem() {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = context.openFileOutput("word.obj", Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
+            oos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            toast(String.valueOf(e), false);
+        } finally {
+            try {
+                if (fos != null) fos.close();
+                if (oos != null) oos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void toast(String message, boolean longer) {

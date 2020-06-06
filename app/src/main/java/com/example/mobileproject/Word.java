@@ -11,14 +11,6 @@ public class Word implements Serializable {
         this.english = english;
     }
 
-    public void setKorean(String korean) {
-        this.korean = korean;
-    }
-
-    public void setEnglish(String english) {
-        this.english = english;
-    }
-
     public String getKorean() {
         return korean;
     }
