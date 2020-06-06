@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Englsih"
+                android:textSize="25sp"
+                android:textColor="#222222"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/txtKorean"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="한국어"
+                android:textSize="18sp"
+                android:textColor="#555555"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/imgDelete"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/delete_foreground"/>
+    </LinearLayout>
+
+</LinearLayout>

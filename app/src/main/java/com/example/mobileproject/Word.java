@@ -1,12 +1,10 @@
-package com.example.mobileproject.ui;
+package com.example.mobileproject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Word implements Serializable {
     private String korean, english;
-    private ArrayList<String> koreanList;
-    private ArrayList<String> englishList;
 
     public Word(String korean, String english) {
         this.korean = korean;
@@ -27,10 +25,5 @@ public class Word implements Serializable {
 
     public String getEnglish() {
         return english;
-    }
-
-    public void addWord(String english_word, String korean_word) {
-        englishList.add(english_word);
-        koreanList.add(korean_word);
     }
 }

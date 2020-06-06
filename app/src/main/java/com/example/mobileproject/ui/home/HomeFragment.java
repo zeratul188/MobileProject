@@ -1,12 +1,14 @@
 package com.example.mobileproject.ui.home;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,9 +22,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.mobileproject.R;
+import com.example.mobileproject.Word;
+import com.example.mobileproject.WordAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -35,6 +44,10 @@ public class HomeFragment extends Fragment {
     private AlertDialog alertDialog = null;
     private AlertDialog.Builder builder = null;
     private View dialog_view = null;
+
+    private WordAdapter adapter;
+    private ArrayList<Word> wordList;
+    private Word word;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,8 +84,37 @@ public class HomeFragment extends Fragment {
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //단어 추가 코드 작성 바람.
+                        FileOutputStream fos = null;
+                        ObjectOutputStream oos = null;
 
+                        String korean = String.valueOf(edtKorean.getText());
+                        String english = String.valueOf(edtEnglish.getText());
+
+                        Word temp_word = new Word(korean, english);
+                        wordList.add(temp_word);
+
+                        try {
+                            fos = getActivity().openFileOutput("word.obj", Context.MODE_PRIVATE);
+                            oos = new ObjectOutputStream(fos);
+                            for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
+                            oos.flush();
+                            toast(english+"("+korean+") 단어를 추가하였습니다.", true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            toast("단어 추가를 하지 못하였습니다.", false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            toast(String.valueOf(e), false);
+                        } finally {
+                            try {
+                                if (fos != null) fos.close();
+                                if (oos != null) oos.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        onStart();
                         alertDialog.dismiss();
                     }
                 });
@@ -90,13 +132,50 @@ public class HomeFragment extends Fragment {
         btnQuiz = root.findViewById(R.id.btnQuiz);
         btnStudy = root.findViewById(R.id.btnStudy);
 
+        wordList = new ArrayList<Word>();
+        adapter = new WordAdapter(getActivity(), wordList);
+        listView.setAdapter(adapter);
+
+
+
         return root;
     }
 
-    public void toast(String message, boolean longer) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        wordList.clear();
+        loadItem();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void toast(String message, boolean longer) {
         int toast_length;
         if (longer) toast_length = Toast.LENGTH_LONG;
         else toast_length = Toast.LENGTH_SHORT;
         Toast.makeText(getActivity(), message, toast_length).show();
+    }
+
+    public void loadItem() {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+
+        try {
+            fis = getActivity().openFileInput("word.obj");
+            ois = new ObjectInputStream(fis);
+            while (wordList.add((Word)ois.readObject()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            toast(String.valueOf(e), false);
+        } finally {
+            try {
+                if (fis != null) fis.close();
+                if (ois != null) ois.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
