@@ -1,6 +1,8 @@
 package com.example.mobileproject;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,9 +20,16 @@ public class WordAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Word> wordList;
 
-    public WordAdapter(Context context, ArrayList<Word> wordList) {
+    private TextView txtEmpty;
+
+    private MyDBHelper myDBHelper;
+    private SQLiteDatabase sqlDB;
+
+    public WordAdapter(Context context, ArrayList<Word> wordList, MyDBHelper myDBHelper, TextView txtEmpty) {
         this.context = context;
         this.wordList = wordList;
+        this.myDBHelper = myDBHelper;
+        this.txtEmpty = txtEmpty;
     }
 
     @Override
@@ -55,9 +64,12 @@ public class WordAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 toast(wordList.get(index).getEnglish()+"("+wordList.get(index).getKorean()+") 단어가 삭제되었습니다.", false);
-                wordList.remove(position);
 
-                refreshItem();
+                deleteItem(wordList.get(index).getEnglish());
+                wordList.remove(index);
+
+                if (wordList.isEmpty()) txtEmpty.setVisibility(View.VISIBLE);
+                else txtEmpty.setVisibility(View.GONE);
 
                 notifyDataSetChanged();
             }
@@ -66,8 +78,8 @@ public class WordAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void refreshItem() {
-        FileOutputStream fos = null;
+    public void deleteItem(String delete_word) {
+        /*FileOutputStream fos = null;
         ObjectOutputStream oos = null;
 
         try {
@@ -85,7 +97,13 @@ public class WordAdapter extends BaseAdapter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
+
+        sqlDB = myDBHelper.getWritableDatabase();
+        String sql = "delete from word where english = '"+delete_word+"';";
+        sqlDB.execSQL(sql);
+
+        sqlDB.close();
     }
 
     private void toast(String message, boolean longer) {

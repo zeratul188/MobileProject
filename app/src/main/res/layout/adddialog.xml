@@ -55,6 +55,53 @@
                 android:background="@drawable/customedit"
                 android:textColor="#222222"/>
         </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="등급 선택 : "
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <RadioGroup
+                android:id="@+id/rgGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RadioButton
+                    android:id="@+id/rdoGrade1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="초급"
+                    android:textColor="#222222"
+                    android:drawableLeft="@drawable/easy_list"
+                    android:drawablePadding="10dp"
+                    android:checked="true"
+                    android:buttonTint="#9b3232"
+                    android:textSize="20sp"/>
+                <RadioButton
+                    android:id="@+id/rdoGrade2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="중급"
+                    android:drawableLeft="@drawable/normal_list"
+                    android:drawablePadding="10dp"
+                    android:textColor="#222222"
+                    android:buttonTint="#9b3232"
+                    android:textSize="20sp"/>
+                <RadioButton
+                    android:id="@+id/rdoGrade3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="고급"
+                    android:drawableLeft="@drawable/hard_list"
+                    android:drawablePadding="10dp"
+                    android:textColor="#222222"
+                    android:buttonTint="#9b3232"
+                    android:textSize="20sp"/>
+            </RadioGroup>
+        </TableRow>
     </TableLayout>
     <LinearLayout
         android:layout_width="match_parent"

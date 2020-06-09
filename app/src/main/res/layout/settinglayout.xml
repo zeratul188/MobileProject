@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <Button
+            android:id="@+id/btnAllDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/reset_foreground"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:text="전체 초기화"
+            android:stateListAnimator="@null"
+            android:textSize="17sp"
+            android:textAlignment="textStart"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#40000000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+        <Button
+            android:id="@+id/btnFavoriteDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/favorite_foreground"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:text="즐겨찾기 초기화"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="2dp"
+            android:textSize="17sp"
+            android:textAlignment="textStart"/>
+        <Button
+            android:id="@+id/btnHarderDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/hard_foreground"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:text="어려운 단어 초기화"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="2dp"
+            android:textSize="17sp"
+            android:textAlignment="textStart"/>
+        <Button
+            android:id="@+id/btnDiffDelete1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/easy_list"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:textSize="17sp"
+            android:text="초급 단어 초기화"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="2dp"
+            android:textAlignment="textStart"/>
+        <Button
+            android:id="@+id/btnDiffDelete2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/normal_list"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:text="중급 단어 초기화"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="2dp"
+            android:textSize="17sp"
+            android:textAlignment="textStart"/>
+        <Button
+            android:id="@+id/btnDiffDelete3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/simplebuttoncustom"
+            android:drawableLeft="@drawable/hard_list"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            android:text="고급 단어 초기화"
+            android:stateListAnimator="@null"
+            android:textSize="17sp"
+            android:textAlignment="textStart"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#40000000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="버전"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1.0.0"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="제작자 학번"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2016100319"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="제작자 학년/반"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3학년 A반"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="제작자 이름"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="박성민"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="학교"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="연성대학교"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="학과"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="컴퓨터소프트웨와과"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

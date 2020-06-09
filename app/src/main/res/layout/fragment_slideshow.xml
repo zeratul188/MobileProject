@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/text_slideshow"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="어려운 단어가 없습니다."
+            android:textSize="20sp"
+            android:textColor="#222222"
+            android:gravity="center"
+            android:paddingTop="50dp"
+            android:visibility="visible"/>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="#9b3232"
+            app:fabSize="normal"
+            android:src="@drawable/add_foreground"/>
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnQuiz"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="퀴즈"
+            android:textColor="#9b3232"
+            android:background="@drawable/buttonstyle"
+            android:textStyle="bold"
+            android:layout_marginRight="3dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnStudy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="공부"
+            android:layout_marginLeft="3dp"
+            android:textColor="#f0f0f0"
+            android:background="@drawable/corebuttonstyle"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</LinearLayout>

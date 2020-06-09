@@ -1,15 +1,15 @@
 package com.example.mobileproject.ui.home;
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,23 +19,17 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.mobileproject.MainActivity;
+import com.example.mobileproject.MyDBHelper;
 import com.example.mobileproject.R;
 import com.example.mobileproject.Word;
 import com.example.mobileproject.WordAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -46,6 +40,7 @@ public class HomeFragment extends Fragment {
 
     private ListView listView;
     private Button btnQuiz, btnStudy;
+    private TextView txtEmpty;
     private boolean end;
 
     private AlertDialog alertDialog = null;
@@ -65,6 +60,10 @@ public class HomeFragment extends Fragment {
 
     private Handler handler = null;
 
+    private MyDBHelper myDBHelper;
+    private SQLiteDatabase sqlDB;
+    private Cursor cursor;
+
     private int index;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,6 +79,8 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
+        myDBHelper = MainActivity.getMyDBHelper();
+
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +92,14 @@ public class HomeFragment extends Fragment {
                 final Button btnAdd = dialog_view.findViewById(R.id.btnAdd);
                 final EditText edtEnglish = dialog_view.findViewById(R.id.edtEnglish);
                 final EditText edtKorean = dialog_view.findViewById(R.id.edtKorean);
+                final RadioGroup rgGrade = dialog_view.findViewById(R.id.rgGrade);
+                final RadioButton[] rdoGrade = new RadioButton[3];
+
+                int temp;
+                for (int i = 0; i < rdoGrade.length; i++) {
+                    temp = dialog_view.getResources().getIdentifier("rdoGrade"+(i+1), "id", getActivity().getPackageName());
+                    rdoGrade[i] = dialog_view.findViewById(temp);
+                }
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -104,11 +113,26 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         String korean = String.valueOf(edtKorean.getText());
                         String english = String.valueOf(edtEnglish.getText());
+                        String grade;
+
+                        switch (rgGrade.getCheckedRadioButtonId()) {
+                            case R.id.rdoGrade1:
+                                grade = String.valueOf(rdoGrade[0].getText());
+                                break;
+                            case R.id.rdoGrade2:
+                                grade = String.valueOf(rdoGrade[1].getText());
+                                break;
+                            case R.id.rdoGrade3:
+                                grade = String.valueOf(rdoGrade[2].getText());
+                                break;
+                            default:
+                                grade = String.valueOf(rdoGrade[0].getText());
+                        }
 
                         Word temp_word = new Word(korean, english);
                         wordList.add(temp_word);
 
-                        saveItem(english, korean);
+                        saveItem(english, korean, grade);
 
                         onStart();
                         alertDialog.dismiss();
@@ -130,13 +154,117 @@ public class HomeFragment extends Fragment {
         btnQuiz = root.findViewById(R.id.btnQuiz);
         btnStudy = root.findViewById(R.id.btnStudy);
 
+        txtEmpty = root.findViewById(R.id.txtEmpty);
+
         wordList = new ArrayList<Word>();
-        adapter = new WordAdapter(getActivity(), wordList);
+        adapter = new WordAdapter(getActivity(), wordList, myDBHelper, txtEmpty);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog_view = getLayoutInflater().inflate(R.layout.showdialog, null);
+
+                final TextView txtEnglish = dialog_view.findViewById(R.id.txtEnglish);
+                final TextView txtGrade = dialog_view.findViewById(R.id.txtGrade);
+                final TextView txtKorean = dialog_view.findViewById(R.id.txtKorean);
+                final Button btnExit = dialog_view.findViewById(R.id.btnExit);
+                final Button btnHard = dialog_view.findViewById(R.id.btnHard);
+                final Button btnFavorite = dialog_view.findViewById(R.id.btnFavorite);
+
+                sqlDB = myDBHelper.getWritableDatabase();
+                cursor = sqlDB.rawQuery("select type from word where english = '"+wordList.get(position).getEnglish()+"';", null);
+
+                String temp = "초급";
+                while (cursor.moveToNext()) {
+                    temp = cursor.getString(0);
+                }
+
+                txtEnglish.setText(wordList.get(position).getEnglish());
+                txtKorean.setText(wordList.get(position).getKorean());
+
+                txtGrade.setText(temp);
+
+                btnExit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                final int index = position;
+                btnHard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean harder = false;
+
+                        sqlDB = myDBHelper.getWritableDatabase();
+                        cursor = sqlDB.rawQuery("select harder from word where english = '"+wordList.get(index).getEnglish()+"';", null);
+
+                        Word temp;
+                        while (cursor.moveToNext()) {
+                            if (cursor.getInt(0) == 0) harder = false;
+                            else harder = true;
+                        }
+
+                        String sql;
+                        if (harder) {
+                            sql = "update word set harder = 0 where english = '"+wordList.get(index).getEnglish()+"';";
+                            toast("어려운 단어를 해제하였습니다.", false);
+                        } else {
+                            sql = "update word set harder = 1 where english = '"+wordList.get(index).getEnglish()+"';";
+                            toast("어려운 단어를 추가하였습니다.", false);
+                        }
+                        sqlDB.execSQL(sql);
+
+                        sqlDB.close();
+                    }
+                });
+
+                btnFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean favorite = false;
+
+                        sqlDB = myDBHelper.getWritableDatabase();
+                        cursor = sqlDB.rawQuery("select favorite from word where english = '"+wordList.get(index).getEnglish()+"';", null);
+
+                        Word temp;
+                        while (cursor.moveToNext()) {
+                            if (cursor.getInt(0) == 0) favorite = false;
+                            else favorite = true;
+                        }
+
+                        String sql;
+                        if (favorite) {
+                            sql = "update word set favorite = 0 where english = '"+wordList.get(index).getEnglish()+"';";
+                            toast("즐겨찾기를 해제하였습니다.", false);
+                        } else {
+                            sql = "update word set favorite = 1 where english = '"+wordList.get(index).getEnglish()+"';";
+                            toast("즐겨찾기를 추가하였습니다.", false);
+                        }
+                        sqlDB.execSQL(sql);
+
+                        sqlDB.close();
+                    }
+                });
+
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setView(dialog_view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+            }
+        });
 
         btnQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (wordList.isEmpty()) {
+                    toast("단어가 비어있습니다.", false);
+                    return;
+                }
                 dialog_view = getLayoutInflater().inflate(R.layout.quizdialog, null);
 
                 final RadioGroup rgLanguage = dialog_view.findViewById(R.id.rgLanguage);
@@ -469,6 +597,10 @@ public class HomeFragment extends Fragment {
         btnStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (wordList.isEmpty()) {
+                    toast("단어가 비어있습니다.", false);
+                    return;
+                }
                 index = 0;
                 dialog_view = getLayoutInflater().inflate(R.layout.studydialog, null);
 
@@ -541,6 +673,8 @@ public class HomeFragment extends Fragment {
         wordList.clear();
         loadItem();
         adapter.notifyDataSetChanged();
+        if (wordList.isEmpty()) txtEmpty.setVisibility(View.VISIBLE);
+        else txtEmpty.setVisibility(View.GONE);
     }
 
     private void toast(String message, boolean longer) {
@@ -550,8 +684,8 @@ public class HomeFragment extends Fragment {
         Toast.makeText(getActivity(), message, toast_length).show();
     }
 
-    public void saveItem(String english, String korean) {
-        FileOutputStream fos = null;
+    public void saveItem(String english, String korean, String grade) {
+        /*FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
             fos = getActivity().openFileOutput("word.obj", Context.MODE_PRIVATE);
@@ -572,7 +706,14 @@ public class HomeFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
+
+        sqlDB = myDBHelper.getWritableDatabase();
+
+        String sql = "insert into word values (null, ?, ?, ?, ?, ?);";
+        Object[] args = {english, korean, 0, 0, grade};
+        sqlDB.execSQL(sql, args);
+        sqlDB.close();
     }
 
     public void addTextView(String message, LinearLayout layout, boolean oked) {
@@ -605,8 +746,14 @@ public class HomeFragment extends Fragment {
         questions--;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        cursor.close();
+    }
+
     public void loadItem() {
-        FileInputStream fis = null;
+        /*FileInputStream fis = null;
         ObjectInputStream ois = null;
 
         try {
@@ -625,6 +772,25 @@ public class HomeFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }*/
+
+        sqlDB = myDBHelper.getWritableDatabase();
+        cursor = sqlDB.rawQuery("select * from word;", null);
+
+        Word temp;
+        while (cursor.moveToNext()) {
+            temp = new Word(cursor.getString(2), cursor.getString(1));
+            wordList.add(temp);
         }
+
+        sqlDB.close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        wordList.clear();
+        loadItem();
+        onStart();
     }
 }

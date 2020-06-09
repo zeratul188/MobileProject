@@ -3,6 +3,8 @@ package com.example.mobileproject.ui.home;
 import android.os.Handler;
 import android.widget.TextView;
 
+import com.example.mobileproject.ui.home.HomeFragment;
+
 public class TimeThread extends Thread {
     private Handler handler;
     private int time = 30;

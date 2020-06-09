@@ -16,18 +16,18 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/hard_foreground"
             android:title="@string/menu_slideshow" />
-        <!--<item
+        <item
             android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@mipmap/diff1_foreground"
             android:title="@string/menu_tools" />
         <item
             android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@mipmap/diff2_foreground"
             android:title="@string/menu_share" />
         <item
             android:id="@+id/nav_send"
-            android:icon="@drawable/ic_menu_send"
-            android:title="@string/menu_send" />-->
+            android:icon="@mipmap/diff3_foreground"
+            android:title="@string/menu_send" />
     </group>
 
 </menu>

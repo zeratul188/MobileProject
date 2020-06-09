@@ -1,5 +1,6 @@
 package com.example.mobileproject;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ import android.view.Menu;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private static MyDBHelper myDBHelper;
+
+    public static MyDBHelper getMyDBHelper() { return myDBHelper; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        myDBHelper = new MyDBHelper(this, "wordDB", null, 1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                intent = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
