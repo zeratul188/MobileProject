@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private static MyDBHelper myDBHelper;
 
     public static MyDBHelper getMyDBHelper() { return myDBHelper; }
+
+    private AlertDialog alertDialog = null;
+    private View view = null;
+    private AlertDialog.Builder builder = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,5 +112,35 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void onBackPressed() {
+
+        view = getLayoutInflater().inflate(R.layout.exitdialog, null);
+
+        final Button btnCancel = view.findViewById(R.id.btnCancel);
+        final Button btnExit = view.findViewById(R.id.btnExit);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (alertDialog != null) alertDialog.dismiss();
+            }
+        });
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (alertDialog != null) alertDialog.dismiss();
+                finish();
+            }
+        });
+
+        builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }

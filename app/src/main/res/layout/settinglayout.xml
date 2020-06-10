@@ -115,7 +115,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1.0.0"
+                android:text="1.1.0"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -210,7 +210,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="컴퓨터소프트웨와과"
+                android:text="컴퓨터소프트웨어과"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="마지막 수정 날짜/시간"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2020년 6월 10일 10시 11분"
                 android:textSize="15sp"/>
 
         </LinearLayout>

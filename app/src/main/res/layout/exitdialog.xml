@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="앱을 종료하시겠습니까?\n등록된 단어들은 저장됩니다."
+        android:textColor="#222222"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:background="@drawable/buttonstyle"
+            android:textStyle="bold"
+            android:textColor="#9b3232"
+            android:layout_marginRight="5dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="종료"
+            android:background="@drawable/corebuttonstyle"
+            android:textStyle="bold"
+            android:textColor="#f0f0f0"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</LinearLayout>

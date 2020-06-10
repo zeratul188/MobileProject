@@ -615,6 +615,9 @@ public class ToolsFragment extends Fragment {
                 txtNow.setText(Integer.toString(index+1));
                 txtMax.setText(Integer.toString(wordList.size()));
 
+                if (wordList.size() == 1) btnNext.setEnabled(false);
+                else btnNext.setEnabled(true);
+
                 btnExit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
