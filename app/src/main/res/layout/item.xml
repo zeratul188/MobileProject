@@ -22,12 +22,14 @@
                 android:textSize="25sp"
                 android:textColor="#222222"
                 android:textStyle="bold"
+                android:fontFamily="@font/the140"
                 android:layout_marginBottom="5dp"/>
             <TextView
                 android:id="@+id/txtKorean"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="한국어"
+                android:fontFamily="@font/the110"
                 android:textSize="18sp"
                 android:textColor="#555555"/>
         </LinearLayout>

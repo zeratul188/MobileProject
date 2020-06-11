@@ -21,6 +21,7 @@
             android:textColor="#222222"
             android:gravity="center"
             android:paddingTop="50dp"
+            android:fontFamily="@font/the110"
             android:visibility="visible"/>
         <ListView
             android:id="@+id/listView"
@@ -51,6 +52,7 @@
             android:textColor="#9b3232"
             android:background="@drawable/buttonstyle"
             android:textStyle="bold"
+            android:fontFamily="@font/the140"
             android:layout_marginRight="3dp"
             android:textSize="20sp"/>
         <Button
@@ -61,6 +63,7 @@
             android:text="공부"
             android:layout_marginLeft="3dp"
             android:textColor="#f0f0f0"
+            android:fontFamily="@font/the140"
             android:background="@drawable/corebuttonstyle"
             android:textStyle="bold"
             android:textSize="20sp"/>

@@ -8,8 +8,9 @@
         android:layout_height="wrap_content"
         android:text="맞추실 언어를 선택하십시오."
         android:textColor="#222222"
+        android:fontFamily="@font/the110"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:textSize="20sp"/>
 
     <RadioGroup
@@ -27,6 +28,7 @@
             android:textColor="#222222"
             android:layout_marginRight="10dp"
             android:checked="true"
+            android:fontFamily="@font/the110"
             android:buttonTint="#9b3232"
             android:textStyle="bold"/>
         <RadioButton
@@ -35,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="한국어"
             android:textSize="20sp"
+            android:fontFamily="@font/the110"
             android:textColor="#222222"
             android:buttonTint="#9b3232"
             android:textStyle="bold"/>
@@ -54,6 +57,7 @@
             android:background="@drawable/buttonstyle"
             android:textStyle="bold"
             android:textColor="#9b3232"
+            android:fontFamily="@font/the140"
             android:layout_marginRight="5dp"
             android:textSize="20sp"/>
         <Button
@@ -65,6 +69,7 @@
             android:background="@drawable/corebuttonstyle"
             android:textStyle="bold"
             android:textColor="#f0f0f0"
+            android:fontFamily="@font/the140"
             android:layout_marginLeft="5dp"
             android:textSize="20sp"/>
     </LinearLayout>

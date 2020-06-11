@@ -17,6 +17,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="맞힌 갯수 : "
+                android:fontFamily="@font/the140"
                 android:textSize="20sp"
                 android:textColor="#222222"
                 android:textAlignment="textEnd"/>
@@ -26,6 +27,7 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:fontFamily="@font/the140"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="#1A721A"/>
@@ -40,6 +42,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="틀린 갯수 : "
+                android:fontFamily="@font/the140"
                 android:textSize="20sp"
                 android:textColor="#222222"
                 android:textAlignment="textEnd"/>
@@ -49,6 +52,7 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:fontFamily="@font/the140"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="#C51313"/>
@@ -58,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="맞힌 단어"
+            android:fontFamily="@font/the140"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#1A721A"
@@ -71,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="틀린 단어"
+            android:fontFamily="@font/the140"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#C51313"

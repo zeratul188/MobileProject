@@ -17,6 +17,7 @@
             android:drawablePadding="20dp"
             android:padding="15dp"
             android:text="전체 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:textSize="17sp"
             android:textAlignment="textStart"/>
@@ -37,6 +38,7 @@
             android:drawablePadding="20dp"
             android:padding="15dp"
             android:text="즐겨찾기 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:layout_marginBottom="2dp"
             android:textSize="17sp"
@@ -50,6 +52,7 @@
             android:drawablePadding="20dp"
             android:padding="15dp"
             android:text="어려운 단어 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:layout_marginBottom="2dp"
             android:textSize="17sp"
@@ -64,6 +67,7 @@
             android:padding="15dp"
             android:textSize="17sp"
             android:text="초급 단어 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:layout_marginBottom="2dp"
             android:textAlignment="textStart"/>
@@ -76,6 +80,7 @@
             android:drawablePadding="20dp"
             android:padding="15dp"
             android:text="중급 단어 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:layout_marginBottom="2dp"
             android:textSize="17sp"
@@ -89,6 +94,7 @@
             android:drawablePadding="20dp"
             android:padding="15dp"
             android:text="고급 단어 초기화"
+            android:fontFamily="@font/the140"
             android:stateListAnimator="@null"
             android:textSize="17sp"
             android:textAlignment="textStart"/>
@@ -109,13 +115,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="버전"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1.1.0"
+                android:fontFamily="@font/the110"
+                android:text="1.2.0"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -128,6 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="제작자 학번"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
@@ -135,6 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="2016100319"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -147,6 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="제작자 학년/반"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
@@ -154,6 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="3학년 A반"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -166,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="제작자 이름"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
@@ -173,6 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="박성민"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -185,6 +199,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="학교"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
@@ -192,6 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="연성대학교"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -204,6 +220,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="학과"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
@@ -211,6 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="컴퓨터소프트웨어과"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -223,13 +241,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="마지막 수정 날짜/시간"
+                android:fontFamily="@font/the140"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2020년 6월 10일 10시 11분"
+                android:text="2020년 6월 11일 10시 36분"
+                android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
         </LinearLayout>

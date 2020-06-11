@@ -9,6 +9,7 @@
         android:text="추가할 단어를 입력하십시오."
         android:layout_marginBottom="10dp"
         android:textSize="20sp"
+        android:fontFamily="@font/the110"
         android:textColor="#222222"/>
 
     <TableLayout
@@ -22,15 +23,18 @@
                 android:text="영어 뜻 : "
                 android:textStyle="bold"
                 android:textAlignment="textEnd"
+                android:fontFamily="@font/the140"
                 android:textSize="20sp"
                 android:textColor="#222222"/>
             <EditText
                 android:id="@+id/edtEnglish"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:hint="영어"
+                android:padding="5dp"
                 android:textSize="20sp"
+                android:fontFamily="@font/the140"
                 android:background="@drawable/customedit"
                 android:textColor="#222222"/>
         </TableRow>
@@ -41,6 +45,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="한국 뜻 : "
+                android:fontFamily="@font/the140"
                 android:textStyle="bold"
                 android:textAlignment="textEnd"
                 android:textSize="20sp"
@@ -48,9 +53,11 @@
             <EditText
                 android:id="@+id/edtKorean"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:hint="한글"
+                android:padding="5dp"
+                android:fontFamily="@font/the140"
                 android:textSize="20sp"
                 android:background="@drawable/customedit"
                 android:textColor="#222222"/>
@@ -58,15 +65,19 @@
         <TableRow
             android:layout_marginTop="10dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="등급 선택 : "
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textAlignment="textEnd"
+                android:fontFamily="@font/the140"
                 android:textColor="#222222"/>
             <RadioGroup
                 android:id="@+id/rgGrade"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <RadioButton
@@ -78,6 +89,7 @@
                     android:drawableLeft="@drawable/easy_list"
                     android:drawablePadding="10dp"
                     android:checked="true"
+                    android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"
                     android:textSize="20sp"/>
                 <RadioButton
@@ -88,6 +100,7 @@
                     android:drawableLeft="@drawable/normal_list"
                     android:drawablePadding="10dp"
                     android:textColor="#222222"
+                    android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"
                     android:textSize="20sp"/>
                 <RadioButton
@@ -98,6 +111,7 @@
                     android:drawableLeft="@drawable/hard_list"
                     android:drawablePadding="10dp"
                     android:textColor="#222222"
+                    android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"
                     android:textSize="20sp"/>
             </RadioGroup>
@@ -115,6 +129,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="취소"
+            android:fontFamily="@font/the140"
             android:background="@drawable/buttonstyle"
             android:textColor="#9b3232"
             android:layout_marginRight="5dp"
@@ -126,6 +141,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="추가"
+            android:fontFamily="@font/the140"
             android:background="@drawable/corebuttonstyle"
             android:textColor="#f0f0f0"
             android:layout_marginLeft="5dp"

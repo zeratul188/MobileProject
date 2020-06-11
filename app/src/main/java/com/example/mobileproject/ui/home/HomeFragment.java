@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -313,6 +317,10 @@ public class HomeFragment extends Fragment {
                             tt.setKoreaned(false);
                             tt.start();
 
+                            if (questions == 1) {
+                                btnNext.setText("결과 보기");
+                            }
+
                             txtQuestion.setText(tempList.get(index).getKorean());
                             txtExam.setText(Integer.toString(questions));
 
@@ -329,6 +337,9 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     if (questions == 1) end = true;
+                                    if (questions == 2) {
+                                        btnNext.setText("결과 보기");
+                                    }
                                     if (!end) {
                                         worse++;
                                         worse_list.add(tempList.get(index));
@@ -377,7 +388,14 @@ public class HomeFragment extends Fragment {
                             btnNext.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    if (String.valueOf(edtResult.getText()).equals("")) {
+                                        toast("단어를 입력하십시오.", false);
+                                        return;
+                                    }
                                     if (questions == 1) end = true;
+                                    if (questions == 2) {
+                                        btnNext.setText("결과 보기");
+                                    }
                                     if (!end) {
                                         if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getEnglish())) {
                                             ok++;
@@ -454,6 +472,10 @@ public class HomeFragment extends Fragment {
                             tt.setKoreaned(true);
                             tt.start();
 
+                            if (questions == 1) {
+                                btnNext.setText("결과 보기");
+                            }
+
                             txtQuestion.setText(tempList.get(index).getEnglish());
                             txtExam.setText(Integer.toString(questions));
 
@@ -470,6 +492,9 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onClick(View v) {
                                     if (questions == 1) end = true;
+                                    if (questions == 2) {
+                                        btnNext.setText("결과 보기");
+                                    }
                                     if (!end) {
                                         worse++;
                                         worse_list.add(tempList.get(index));
@@ -518,7 +543,14 @@ public class HomeFragment extends Fragment {
                             btnNext.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    if (String.valueOf(edtResult.getText()).equals("")) {
+                                        toast("단어를 입력하십시오.", false);
+                                        return;
+                                    }
                                     if (questions == 1) end = true;
+                                    if (questions == 2) {
+                                        btnNext.setText("결과 보기");
+                                    }
                                     if (!end) {
                                         if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getKorean())) {
                                             ok++;
@@ -723,6 +755,8 @@ public class HomeFragment extends Fragment {
         TextView view = new TextView(getActivity());
         view.setText(message);
         view.setTextSize(20);
+        Typeface face = ResourcesCompat.getFont(getActivity(), R.font.the110);
+        view.setTypeface(face);
         if (oked) view.setTextColor(Color.parseColor("#1A721A"));
         else view.setTextColor(Color.parseColor("#C51313"));
         layout.addView(view);
