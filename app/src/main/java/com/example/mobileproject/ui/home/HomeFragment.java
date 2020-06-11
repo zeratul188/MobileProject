@@ -119,6 +119,11 @@ public class HomeFragment extends Fragment {
                         String english = String.valueOf(edtEnglish.getText());
                         String grade;
 
+                        if (korean.equals("") || english.equals("")) {
+                            toast("영어와 한글을 입력해주세요.", false);
+                            return;
+                        }
+
                         switch (rgGrade.getCheckedRadioButtonId()) {
                             case R.id.rdoGrade1:
                                 grade = String.valueOf(rdoGrade[0].getText());
@@ -643,6 +648,7 @@ public class HomeFragment extends Fragment {
                 final Button btnNext = dialog_view.findViewById(R.id.btnNext);
                 final TextView txtNow = dialog_view.findViewById(R.id.txtNow);
                 final TextView txtMax = dialog_view.findViewById(R.id.txtMax);
+                final TextView txtKoreanUnShowed = dialog_view.findViewById(R.id.txtKoreanUnShowed);
 
                 txtEnglish.setText(wordList.get(index).getEnglish());
                 txtKorean.setText(wordList.get(index).getKorean());
@@ -660,9 +666,19 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+                txtKoreanUnShowed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        txtKorean.setVisibility(View.VISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.INVISIBLE);
+                    }
+                });
+
                 btnPervous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        txtKorean.setVisibility(View.INVISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
                         index--;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());
@@ -678,6 +694,8 @@ public class HomeFragment extends Fragment {
                 btnNext.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        txtKorean.setVisibility(View.INVISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
                         index++;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());

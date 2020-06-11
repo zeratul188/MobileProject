@@ -30,8 +30,6 @@ import com.example.mobileproject.MyDBHelper;
 import com.example.mobileproject.R;
 import com.example.mobileproject.Word;
 import com.example.mobileproject.WordAdapter;
-import com.example.mobileproject.ui.gallery.TimeThread;
-import com.example.mobileproject.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -111,6 +109,11 @@ public class GalleryFragment extends Fragment {
                         String korean = String.valueOf(edtKorean.getText());
                         String english = String.valueOf(edtEnglish.getText());
                         String grade;
+
+                        if (korean.equals("") || english.equals("")) {
+                            toast("영어와 한글을 입력해주세요.", false);
+                            return;
+                        }
 
                         switch (rgGrade.getCheckedRadioButtonId()) {
                             case R.id.rdoGrade1:
@@ -640,6 +643,7 @@ public class GalleryFragment extends Fragment {
                 final Button btnNext = dialog_view.findViewById(R.id.btnNext);
                 final TextView txtNow = dialog_view.findViewById(R.id.txtNow);
                 final TextView txtMax = dialog_view.findViewById(R.id.txtMax);
+                final TextView txtKoreanUnShowed = dialog_view.findViewById(R.id.txtKoreanUnShowed);
 
                 txtEnglish.setText(wordList.get(index).getEnglish());
                 txtKorean.setText(wordList.get(index).getKorean());
@@ -657,9 +661,19 @@ public class GalleryFragment extends Fragment {
                     }
                 });
 
+                txtKoreanUnShowed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        txtKorean.setVisibility(View.VISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.INVISIBLE);
+                    }
+                });
+
                 btnPervous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        txtKorean.setVisibility(View.INVISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
                         index--;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());
@@ -675,6 +689,8 @@ public class GalleryFragment extends Fragment {
                 btnNext.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        txtKorean.setVisibility(View.INVISIBLE);
+                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
                         index++;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());

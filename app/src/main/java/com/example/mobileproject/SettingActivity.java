@@ -33,7 +33,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settinglayout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("환경세팅");
+        setTitle("환경설정");
 
         View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

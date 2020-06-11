@@ -34,6 +34,14 @@
                 android:textColor="#555555"/>
         </LinearLayout>
         <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/edit_foreground"/>
+        <ImageView
             android:id="@+id/imgDelete"
             android:layout_width="0dp"
             android:layout_weight="1"

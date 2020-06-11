@@ -1,7 +1,6 @@
 package com.example.mobileproject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Word implements Serializable {
     private String korean, english;
@@ -17,5 +16,13 @@ public class Word implements Serializable {
 
     public String getEnglish() {
         return english;
+    }
+
+    public void setEnglish(String english) {
+        this.english = english;
+    }
+
+    public void setKorean(String korean) {
+        this.korean = korean;
     }
 }
