@@ -352,7 +352,7 @@ public class HomeFragment extends Fragment {
                                     if (!end) {
                                         worse++;
                                         worse_list.add(tempList.get(index));
-                                        nextWord(tempList, true, txtQuestion);
+                                        nextWord(tempList, false, txtQuestion);
                                         txtExam.setText(Integer.toString(questions));
                                         tt.reset(getItemIndex());
                                     } else {
