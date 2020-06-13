@@ -7,7 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,10 +18,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class SettingActivity extends AppCompatActivity {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+
+public class SettingActivity extends AppCompatActivity{
 
     private Button btnAllDelete, btnFavoriteDelete, btnHarderDelete;
     private Button[] btnDiffDelete = new Button[3];
+    private Spinner spinnerTime;
 
     private MyDBHelper myDBHelper;
     private SQLiteDatabase sqlDB;
@@ -27,6 +36,10 @@ public class SettingActivity extends AppCompatActivity {
     private AlertDialog.Builder builder = null;
 
     private String[] diff = {"초급", "중급", "고급"};
+    private String[] items = {"10초", "20초", "30초", "40초", "50초", "1분"};
+    private int[] times = {10, 20, 30, 40, 50, 60};
+
+    boolean first_selected = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +63,46 @@ public class SettingActivity extends AppCompatActivity {
         btnAllDelete = findViewById(R.id.btnAllDelete);
         btnFavoriteDelete = findViewById(R.id.btnFavoriteDelete);
         btnHarderDelete = findViewById(R.id.btnHarderDelete);
+        spinnerTime = findViewById(R.id.spinnerTime);
+
+        spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                FileOutputStream fos = null;
+                String memoData = Integer.toString(times[position]);
+                System.out.println(times[position]);
+                if (!first_selected) {
+                    try {
+                        fos = openFileOutput("settings.txt", MODE_PRIVATE);
+                        fos.write(memoData.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        toast(String.valueOf(e), false);
+                    } finally {
+                        try {
+                            if (fos != null) fos.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    first_selected = false;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        spinnerTime.setAdapter(adapter);
+
+        int position = Arrays.binarySearch(times, Integer.parseInt(getItemIndex()));
+        spinnerTime.setSelection(position);
 
         int temp;
         for (int i = 0; i < btnDiffDelete.length; i++) {
@@ -158,6 +211,8 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
+
+
     public void toast(String message, boolean longer) {
         int length;
         if (longer) length = Toast.LENGTH_LONG;
@@ -174,5 +229,31 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getItemIndex() {
+        String result;
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput("settings.txt");
+            byte[] memoData = new byte[fis.available()];
+
+            while(fis.read(memoData) != -1) {}
+            result = new String(memoData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = "30";
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "30";
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }

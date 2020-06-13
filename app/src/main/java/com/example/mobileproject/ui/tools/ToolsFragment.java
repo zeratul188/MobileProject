@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ import com.example.mobileproject.ui.home.HomeFragment;
 import com.example.mobileproject.ui.tools.TimeThread;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ToolsFragment extends Fragment {
@@ -313,7 +316,7 @@ public class ToolsFragment extends Fragment {
                             final Button btnPass = dialog_view.findViewById(R.id.btnPass);
                             final Button btnNext = dialog_view.findViewById(R.id.btnNext);
 
-                            tt = new TimeThread(handler, 30, txtTime, ToolsFragment.this);
+                            tt = new TimeThread(handler, getItemIndex(), txtTime, ToolsFragment.this);
                             tt.setKoreaned(false);
                             tt.start();
 
@@ -323,6 +326,7 @@ public class ToolsFragment extends Fragment {
 
                             txtQuestion.setText(tempList.get(index).getKorean());
                             txtExam.setText(Integer.toString(questions));
+                            txtTime.setText(Integer.toString(getItemIndex()));
 
                             btnExit.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -345,7 +349,7 @@ public class ToolsFragment extends Fragment {
                                         worse_list.add(tempList.get(index));
                                         nextWord(tempList, true, txtQuestion);
                                         txtExam.setText(Integer.toString(questions));
-                                        tt.reset(30);
+                                        tt.reset(getItemIndex());
                                     } else {
                                         worse++;
                                         worse_list.add(tempList.get(index));
@@ -358,6 +362,14 @@ public class ToolsFragment extends Fragment {
                                         final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
                                         final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
                                         final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+                                        final TextView txtProgess = dialog_view.findViewById(R.id.txtProgress);
+                                        final ProgressBar progessPercent = dialog_view.findViewById(R.id.progressPercent);
+
+                                        int percent = (int)((double)ok/(double)(ok+worse)*100.0);
+                                        txtProgess.setText(Integer.toString(percent));
+
+                                        progessPercent.setMax(ok+worse);
+                                        progessPercent.setProgress(ok);
 
                                         txtOK.setText(Integer.toString(ok));
                                         txtWorse.setText(Integer.toString(worse));
@@ -406,8 +418,8 @@ public class ToolsFragment extends Fragment {
                                         }
                                         nextWord(tempList, false, txtQuestion);
                                         txtExam.setText(Integer.toString(questions));
-                                        tt.reset(30);
-                                        txtTime.setText("30");
+                                        tt.reset(getItemIndex());
+                                        txtTime.setText(Integer.toString(getItemIndex()));
                                     } else {
                                         if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getEnglish())) {
                                             ok++;
@@ -424,6 +436,14 @@ public class ToolsFragment extends Fragment {
                                         final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
                                         final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
                                         final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+                                        final TextView txtProgess = dialog_view.findViewById(R.id.txtProgress);
+                                        final ProgressBar progessPercent = dialog_view.findViewById(R.id.progressPercent);
+
+                                        int percent = (int)((double)ok/(double)(ok+worse)*100.0);
+                                        txtProgess.setText(Integer.toString(percent));
+
+                                        progessPercent.setMax(ok+worse);
+                                        progessPercent.setProgress(ok);
 
                                         txtOK.setText(Integer.toString(ok));
                                         txtWorse.setText(Integer.toString(worse));
@@ -468,7 +488,7 @@ public class ToolsFragment extends Fragment {
                             final Button btnPass = dialog_view.findViewById(R.id.btnPass);
                             final Button btnNext = dialog_view.findViewById(R.id.btnNext);
 
-                            tt = new TimeThread(handler, 30, txtTime, ToolsFragment.this);
+                            tt = new TimeThread(handler, getItemIndex(), txtTime, ToolsFragment.this);
                             tt.setKoreaned(true);
                             tt.start();
 
@@ -478,6 +498,7 @@ public class ToolsFragment extends Fragment {
 
                             txtQuestion.setText(tempList.get(index).getEnglish());
                             txtExam.setText(Integer.toString(questions));
+                            txtTime.setText(Integer.toString(getItemIndex()));
 
                             btnExit.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -500,7 +521,7 @@ public class ToolsFragment extends Fragment {
                                         worse_list.add(tempList.get(index));
                                         nextWord(tempList, true, txtQuestion);
                                         txtExam.setText(Integer.toString(questions));
-                                        tt.reset(30);
+                                        tt.reset(getItemIndex());
                                     } else {
                                         worse++;
                                         worse_list.add(tempList.get(index));
@@ -513,6 +534,14 @@ public class ToolsFragment extends Fragment {
                                         final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
                                         final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
                                         final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+                                        final TextView txtProgess = dialog_view.findViewById(R.id.txtProgress);
+                                        final ProgressBar progessPercent = dialog_view.findViewById(R.id.progressPercent);
+
+                                        int percent = (int)((double)ok/(double)(ok+worse)*100.0);
+                                        txtProgess.setText(Integer.toString(percent));
+
+                                        progessPercent.setMax(ok+worse);
+                                        progessPercent.setProgress(ok);
 
                                         txtOK.setText(Integer.toString(ok));
                                         txtWorse.setText(Integer.toString(worse));
@@ -561,8 +590,8 @@ public class ToolsFragment extends Fragment {
                                         }
                                         nextWord(tempList, true, txtQuestion);
                                         txtExam.setText(Integer.toString(questions));
-                                        tt.reset(30);
-                                        txtTime.setText("30");
+                                        tt.reset(getItemIndex());
+                                        txtTime.setText(Integer.toString(getItemIndex()));
                                     } else {
                                         if (String.valueOf(edtResult.getText()).equals(tempList.get(index).getKorean())) {
                                             ok++;
@@ -579,6 +608,14 @@ public class ToolsFragment extends Fragment {
                                         final TextView txtWorse = dialog_view.findViewById(R.id.txtWorse);
                                         final LinearLayout layoutOK = dialog_view.findViewById(R.id.layoutOK);
                                         final LinearLayout layoutWorse = dialog_view.findViewById(R.id.layoutWorse);
+                                        final TextView txtProgess = dialog_view.findViewById(R.id.txtProgress);
+                                        final ProgressBar progessPercent = dialog_view.findViewById(R.id.progressPercent);
+
+                                        int percent = (int)((double)ok/(double)(ok+worse)*100.0);
+                                        txtProgess.setText(Integer.toString(percent));
+
+                                        progessPercent.setMax(ok+worse);
+                                        progessPercent.setProgress(ok);
 
                                         txtOK.setText(Integer.toString(ok));
                                         txtWorse.setText(Integer.toString(worse));
@@ -842,5 +879,31 @@ public class ToolsFragment extends Fragment {
         wordList.clear();
         loadItem();
         onStart();
+    }
+
+    public int getItemIndex() {
+        String result;
+        FileInputStream fis = null;
+
+        try {
+            fis = getActivity().openFileInput("settings.txt");
+            byte[] memoData = new byte[fis.available()];
+
+            while(fis.read(memoData) != -1) {}
+            result = new String(memoData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = "30";
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "30";
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Integer.parseInt(result);
     }
 }

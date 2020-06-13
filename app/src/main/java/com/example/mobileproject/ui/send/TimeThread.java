@@ -11,12 +11,14 @@ public class TimeThread extends Thread {
     private boolean stop, koreaned = true;
     private TextView txtTime = null;
     private SendFragment hf = null;
+    private int start = 30;
 
     public TimeThread(Handler handler, int time, TextView txtTime, SendFragment hf) {
         this.handler = handler;
         this.time = time;
         this.txtTime = txtTime;
         this.hf = hf;
+        start = time;
     }
 
     public void setKoreaned(boolean koreaned) {
@@ -51,7 +53,7 @@ public class TimeThread extends Thread {
                     @Override
                     public void run() {
                         hf.timeout(koreaned);
-                        time = 30;
+                        time = start;
                     }
                 });
             }

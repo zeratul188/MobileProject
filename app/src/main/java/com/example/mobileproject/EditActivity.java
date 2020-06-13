@@ -25,7 +25,7 @@ public class EditActivity extends AppCompatActivity {
     private SQLiteDatabase sqlDB;
 
     private EditText edtEnglish, edtKorean;
-    private Button btnExit, btnEdit;
+    private Button btnEdit;
     private TextView txtEnglish, txtKorean;
     private RadioGroup rgGrade;
     private RadioButton[] rdoGrade = new RadioButton[3];
@@ -63,7 +63,6 @@ public class EditActivity extends AppCompatActivity {
         edtEnglish = findViewById(R.id.edtEnglish);
         edtKorean = findViewById(R.id.edtKorean);
         btnEdit = findViewById(R.id.btnEdit);
-        btnExit = findViewById(R.id.btnExit);
         txtEnglish = findViewById(R.id.txtEnglish);
         txtKorean = findViewById(R.id.txtKorean);
         rgGrade = findViewById(R.id.rgGrade);
@@ -75,13 +74,6 @@ public class EditActivity extends AppCompatActivity {
 
         txtEnglish.setText(wordList.get(index).getEnglish());
         txtKorean.setText(wordList.get(index).getKorean());
-
-        btnExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
