@@ -98,7 +98,7 @@ public class SettingActivity extends AppCompatActivity{
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, items);
         spinnerTime.setAdapter(adapter);
 
         int position = Arrays.binarySearch(times, Integer.parseInt(getItemIndex()));

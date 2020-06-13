@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:padding="15dp">
             <TextView
                 android:layout_width="0dp"
@@ -149,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/the110"
-                android:text="1.4.0"
+                android:text="1.4.1"
                 android:textSize="15sp"/>
 
         </LinearLayout>
