@@ -11,6 +11,7 @@
         android:fontFamily="@font/the110"
         android:layout_gravity="center"
         android:layout_marginBottom="15dp"
+        android:textStyle="bold"
         android:textSize="20sp"/>
 
     <RadioGroup

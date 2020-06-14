@@ -1,6 +1,7 @@
 package com.example.mobileproject;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,12 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,10 +28,13 @@ public class SettingActivity extends AppCompatActivity{
 
     private Button btnAllDelete, btnFavoriteDelete, btnHarderDelete;
     private Button[] btnDiffDelete = new Button[3];
+    private TextView txtAll, txtFavorite, txtHarder;
+    private TextView[] txtDiff = new TextView[3];
     private Spinner spinnerTime;
 
     private MyDBHelper myDBHelper;
     private SQLiteDatabase sqlDB;
+    private Cursor cursor;
 
     private AlertDialog alertDialog = null;
     private AlertDialog.Builder builder = null;
@@ -38,6 +42,9 @@ public class SettingActivity extends AppCompatActivity{
     private String[] diff = {"초급", "중급", "고급"};
     private String[] items = {"10초", "20초", "30초", "40초", "50초", "1분"};
     private int[] times = {10, 20, 30, 40, 50, 60};
+
+    private int all, favorite, harder;
+    private int[] diff_count = new int[3];
 
     boolean first_selected = true;
 
@@ -47,6 +54,8 @@ public class SettingActivity extends AppCompatActivity{
         setContentView(R.layout.settinglayout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("환경설정");
+
+        myDBHelper = MainActivity.getMyDBHelper();
 
         View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -64,32 +73,22 @@ public class SettingActivity extends AppCompatActivity{
         btnFavoriteDelete = findViewById(R.id.btnFavoriteDelete);
         btnHarderDelete = findViewById(R.id.btnHarderDelete);
         spinnerTime = findViewById(R.id.spinnerTime);
+        txtAll = findViewById(R.id.txtAll);
+        txtFavorite = findViewById(R.id.txtFavorite);
+        txtHarder = findViewById(R.id.txtHarder);
+
+        int temp;
+        for (int i = 0; i < txtDiff.length; i++) {
+            temp = getResources().getIdentifier("txtDiff"+(i+1), "id", getPackageName());
+            txtDiff[i] = findViewById(temp);
+        }
+
+        refreshCount();
 
         spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                FileOutputStream fos = null;
-                String memoData = Integer.toString(times[position]);
-                System.out.println(times[position]);
-                if (!first_selected) {
-                    try {
-                        fos = openFileOutput("settings.txt", MODE_PRIVATE);
-                        fos.write(memoData.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        toast(String.valueOf(e), false);
-                    } finally {
-                        try {
-                            if (fos != null) fos.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    first_selected = false;
-                }
+                loadSetting(position);
             }
 
             @Override
@@ -104,7 +103,6 @@ public class SettingActivity extends AppCompatActivity{
         int position = Arrays.binarySearch(times, Integer.parseInt(getItemIndex()));
         spinnerTime.setSelection(position);
 
-        int temp;
         for (int i = 0; i < btnDiffDelete.length; i++) {
             temp = getResources().getIdentifier("btnDiffDelete"+(i+1), "id", getPackageName());
             btnDiffDelete[i] = findViewById(temp);
@@ -113,99 +111,29 @@ public class SettingActivity extends AppCompatActivity{
             btnDiffDelete[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    builder = new AlertDialog.Builder(SettingActivity.this);
-                    builder.setTitle(diff[index]+" 단어 삭제");
-                    builder.setMessage(diff[index]+" 단어를 삭제하시겠습니까?");
-                    builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            sqlDB = myDBHelper.getWritableDatabase();
-                            String sql = "delete from word where type = '"+diff[index]+"';";
-                            sqlDB.execSQL(sql);
-                            sqlDB.close();
-                            toast(diff[index]+" 단어를 삭제하였습니다.", false);
-                        }
-                    });
-                    builder.setNegativeButton("취소", null);
-
-                    alertDialog = builder.create();
-                    alertDialog.setCancelable(false);
-                    alertDialog.show();
+                    deleteDialog(diff[index]+" 단어 삭제", diff[index]+" 단어를 삭제하시겠습니까?", "delete from word where type = '"+diff[index]+"';", diff[index]+" 단어를 삭제하였습니다.");
                 }
             });
         }
 
-        myDBHelper = MainActivity.getMyDBHelper();
-
         btnAllDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder = new AlertDialog.Builder(SettingActivity.this);
-                builder.setTitle("모든 단어 삭제");
-                builder.setMessage("모든 단어를 삭제하시겠습니까?");
-                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sqlDB = myDBHelper.getWritableDatabase();
-                        String sql = "delete from word;";
-                        sqlDB.execSQL(sql);
-                        sqlDB.close();
-                        toast("모든 단어가 삭제되었습니다.", false);
-                    }
-                });
-                builder.setNegativeButton("취소", null);
-
-                alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                deleteDialog("모든 단어 삭제", "모든 단어를 삭제하시겠습니까?", "delete from word;", "모든 단어가 삭제되었습니다.");
             }
         });
 
         btnFavoriteDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder = new AlertDialog.Builder(SettingActivity.this);
-                builder.setTitle("즐겨찾기 단어 삭제");
-                builder.setMessage("즐겨찾기 단어를 삭제하시겠습니까?");
-                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sqlDB = myDBHelper.getWritableDatabase();
-                        String sql = "delete from word where favorite = 1;";
-                        sqlDB.execSQL(sql);
-                        sqlDB.close();
-                        toast("즐겨찾기 단어를 삭제하였습니다.", false);
-                    }
-                });
-                builder.setNegativeButton("취소", null);
-
-                alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                deleteDialog("즐겨찾기 단어 삭제", "즐겨찾기 단어를 삭제하시겠습니까?", "delete from word where favorite = 1;", "즐겨찾기 단어를 삭제하였습니다.");
             }
         });
 
         btnHarderDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder = new AlertDialog.Builder(SettingActivity.this);
-                builder.setTitle("어려운 단어 삭제");
-                builder.setMessage("어려운 단어를 삭제하시겠습니까?");
-                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sqlDB = myDBHelper.getWritableDatabase();
-                        String sql = "delete from word where harder = 1;";
-                        sqlDB.execSQL(sql);
-                        sqlDB.close();
-                        toast("어려운 단어를 삭제하였습니다.", false);
-                    }
-                });
-                builder.setNegativeButton("취소", null);
-
-                alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                deleteDialog("어려운 단어 삭제", "어려운 단어를 삭제하시겠습니까?", "delete from word where harder = 1;", "어려운 단어를 삭제하였습니다.");
             }
         });
 
@@ -229,6 +157,83 @@ public class SettingActivity extends AppCompatActivity{
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void refreshCount() {
+        sqlDB = myDBHelper.getWritableDatabase();
+
+        cursor = sqlDB.rawQuery("select count(*) from word;", null);
+        while (cursor.moveToNext()) {
+            all = Integer.parseInt(cursor.getString(0));
+        }
+        txtAll.setText(Integer.toString(all));
+
+        cursor = sqlDB.rawQuery("select count(*) from word where favorite = 1;", null);
+        while (cursor.moveToNext()) {
+            favorite = Integer.parseInt(cursor.getString(0));
+        }
+        txtFavorite.setText(Integer.toString(favorite));
+
+        cursor = sqlDB.rawQuery("select count(*) from word where harder = 1;", null);
+        while (cursor.moveToNext()) {
+            harder = Integer.parseInt(cursor.getString(0));
+        }
+        txtHarder.setText(Integer.toString(harder));
+
+        for (int i = 0; i < txtDiff.length; i++) {
+            cursor = sqlDB.rawQuery("select count(*) from word where type = '"+diff[i]+"';", null);
+            while (cursor.moveToNext()) {
+                diff_count[i] = Integer.parseInt(cursor.getString(0));
+            }
+            txtDiff[i].setText(Integer.toString(diff_count[i]));
+        }
+    }
+
+    public void deleteDialog(String title, String message, String sql, String toast) {
+        builder = new AlertDialog.Builder(SettingActivity.this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        final String final_sql = sql, final_toast = toast;
+        builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sqlDB = myDBHelper.getWritableDatabase();
+                sqlDB.execSQL(final_sql);
+                sqlDB.close();
+                toast(final_toast, false);
+                refreshCount();
+            }
+        });
+        builder.setNegativeButton("취소", null);
+
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    public void loadSetting(int position) {
+        FileOutputStream fos = null;
+        String memoData = Integer.toString(times[position]);
+        System.out.println(times[position]);
+        if (!first_selected) {
+            try {
+                fos = openFileOutput("settings.txt", MODE_PRIVATE);
+                fos.write(memoData.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                toast(String.valueOf(e), false);
+            } finally {
+                try {
+                    if (fos != null) fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            first_selected = false;
+        }
     }
 
     public String getItemIndex() {

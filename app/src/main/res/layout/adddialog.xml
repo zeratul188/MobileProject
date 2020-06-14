@@ -9,6 +9,7 @@
         android:text="추가할 단어를 입력하십시오."
         android:layout_marginBottom="10dp"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:fontFamily="@font/the110"
         android:textColor="#222222"/>
 
@@ -21,7 +22,6 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="영어 뜻 : "
-                android:textStyle="bold"
                 android:textAlignment="textEnd"
                 android:fontFamily="@font/the140"
                 android:textSize="20sp"
@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:text="한국 뜻 : "
                 android:fontFamily="@font/the140"
-                android:textStyle="bold"
                 android:textAlignment="textEnd"
                 android:textSize="20sp"
                 android:textColor="#222222"/>
@@ -70,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:text="등급 선택 : "
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:textAlignment="textEnd"
                 android:fontFamily="@font/the140"
                 android:textColor="#222222"/>
@@ -89,6 +87,7 @@
                     android:drawableLeft="@drawable/easy_list"
                     android:drawablePadding="10dp"
                     android:checked="true"
+                    android:textStyle="bold"
                     android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"
                     android:textSize="20sp"/>
@@ -100,6 +99,7 @@
                     android:drawableLeft="@drawable/normal_list"
                     android:drawablePadding="10dp"
                     android:textColor="#222222"
+                    android:textStyle="bold"
                     android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"
                     android:textSize="20sp"/>
@@ -110,6 +110,7 @@
                     android:text="고급"
                     android:drawableLeft="@drawable/hard_list"
                     android:drawablePadding="10dp"
+                    android:textStyle="bold"
                     android:textColor="#222222"
                     android:fontFamily="@font/the110"
                     android:buttonTint="#9b3232"

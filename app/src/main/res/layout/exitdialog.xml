@@ -11,6 +11,7 @@
         android:gravity="center"
         android:fontFamily="@font/the110"
         android:layout_gravity="center"
+        android:textStyle="bold"
         android:textSize="20sp"/>
 
     <LinearLayout

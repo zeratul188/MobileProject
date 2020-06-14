@@ -8,19 +8,42 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
-        <Button
-            android:id="@+id/btnAllDelete"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/reset_foreground"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:text="전체 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:textSize="17sp"
-            android:textAlignment="textStart"/>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnAllDelete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/reset_foreground"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:text="전체 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:textSize="17sp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -29,75 +52,190 @@
             android:background="#40000000"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
-        <Button
-            android:id="@+id/btnFavoriteDelete"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/favorite_foreground"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:text="즐겨찾기 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:layout_marginBottom="2dp"
-            android:textSize="17sp"
-            android:textAlignment="textStart"/>
-        <Button
-            android:id="@+id/btnHarderDelete"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnFavoriteDelete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/favorite_foreground"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:text="즐겨찾기 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="2dp"
+                android:textSize="17sp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/hard_foreground"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:text="어려운 단어 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:layout_marginBottom="2dp"
-            android:textSize="17sp"
-            android:textAlignment="textStart"/>
-        <Button
-            android:id="@+id/btnDiffDelete1"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnHarderDelete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/hard_foreground"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:text="어려운 단어 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="2dp"
+                android:textSize="17sp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtHarder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/easy_list"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:textSize="17sp"
-            android:text="초급 단어 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:layout_marginBottom="2dp"
-            android:textAlignment="textStart"/>
-        <Button
-            android:id="@+id/btnDiffDelete2"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnDiffDelete1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/easy_list"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:textSize="17sp"
+                android:text="초급 단어 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="2dp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtDiff1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/normal_list"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:text="중급 단어 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:layout_marginBottom="2dp"
-            android:textSize="17sp"
-            android:textAlignment="textStart"/>
-        <Button
-            android:id="@+id/btnDiffDelete3"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnDiffDelete2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/normal_list"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:text="중급 단어 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="2dp"
+                android:textSize="17sp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtDiff2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/simplebuttoncustom"
-            android:drawableLeft="@drawable/hard_list"
-            android:drawablePadding="20dp"
-            android:padding="15dp"
-            android:text="고급 단어 초기화"
-            android:fontFamily="@font/the140"
-            android:stateListAnimator="@null"
-            android:textSize="17sp"
-            android:textAlignment="textStart"/>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnDiffDelete3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simplebuttoncustom"
+                android:drawableLeft="@drawable/hard_list"
+                android:drawablePadding="20dp"
+                android:padding="15dp"
+                android:text="고급 단어 초기화"
+                android:fontFamily="@font/the140"
+                android:stateListAnimator="@null"
+                android:textSize="17sp"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtDiff3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개"
+                android:textSize="17sp"
+                android:fontFamily="@font/the110"
+                android:textColor="#222222"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -150,7 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/the110"
-                android:text="1.4.2"
+                android:text="1.4.3"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -275,7 +413,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2020년 6월 14일 8시 40분"
+                android:text="2020년 6월 14일 10시 33분"
                 android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
