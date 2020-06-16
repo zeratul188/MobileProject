@@ -307,7 +307,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/the110"
-                android:text="1.4.4"
+                android:text="1.5.0"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -426,7 +426,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2020년 6월 16일 10시 6분"
+                android:text="2020년 6월 16일 14시 10분"
                 android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 
