@@ -616,6 +616,19 @@ public class SendFragment extends Fragment {
                 final TextView txtNow = dialog_view.findViewById(R.id.txtNow);
                 final TextView txtMax = dialog_view.findViewById(R.id.txtMax);
                 final TextView txtKoreanUnShowed = dialog_view.findViewById(R.id.txtKoreanUnShowed);
+                final TextView txtEnglishUnShowed = dialog_view.findViewById(R.id.txtEnglishUnShowed);
+
+                if (loadChecked()) {
+                    txtEnglishUnShowed.setVisibility(View.VISIBLE);
+                    txtKoreanUnShowed.setVisibility(View.INVISIBLE);
+                    txtEnglish.setVisibility(View.INVISIBLE);
+                    txtKorean.setVisibility(View.VISIBLE);
+                } else {
+                    txtEnglishUnShowed.setVisibility(View.INVISIBLE);
+                    txtKoreanUnShowed.setVisibility(View.VISIBLE);
+                    txtEnglish.setVisibility(View.VISIBLE);
+                    txtKorean.setVisibility(View.INVISIBLE);
+                }
 
                 txtEnglish.setText(wordList.get(index).getEnglish());
                 txtKorean.setText(wordList.get(index).getKorean());
@@ -641,11 +654,24 @@ public class SendFragment extends Fragment {
                     }
                 });
 
+                txtEnglishUnShowed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        txtEnglish.setVisibility(View.VISIBLE);
+                        txtEnglishUnShowed.setVisibility(View.INVISIBLE);
+                    }
+                });
+
                 btnPervous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtKorean.setVisibility(View.INVISIBLE);
-                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
+                        if (loadChecked()) {
+                            txtEnglishUnShowed.setVisibility(View.VISIBLE);
+                            txtEnglish.setVisibility(View.INVISIBLE);
+                        } else {
+                            txtKoreanUnShowed.setVisibility(View.VISIBLE);
+                            txtKorean.setVisibility(View.INVISIBLE);
+                        }
                         index--;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());
@@ -661,8 +687,13 @@ public class SendFragment extends Fragment {
                 btnNext.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtKorean.setVisibility(View.INVISIBLE);
-                        txtKoreanUnShowed.setVisibility(View.VISIBLE);
+                        if (loadChecked()) {
+                            txtEnglishUnShowed.setVisibility(View.VISIBLE);
+                            txtEnglish.setVisibility(View.INVISIBLE);
+                        } else {
+                            txtKoreanUnShowed.setVisibility(View.VISIBLE);
+                            txtKorean.setVisibility(View.INVISIBLE);
+                        }
                         index++;
                         txtNow.setText(Integer.toString(index+1));
                         txtEnglish.setText(wordList.get(index).getEnglish());
@@ -840,5 +871,32 @@ public class SendFragment extends Fragment {
             }
         }
         return Integer.parseInt(result);
+    }
+
+    public boolean loadChecked() {
+        boolean result = false;
+        FileInputStream fis = null;
+
+        try {
+            fis = getActivity().openFileInput("hide_checked.txt");
+            byte[] memoData = new byte[fis.available()];
+
+            while(fis.read(memoData) != -1) {}
+            result = Boolean.parseBoolean(new String(memoData));
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 }

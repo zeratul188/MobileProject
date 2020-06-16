@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ public class SettingActivity extends AppCompatActivity{
     private TextView txtAll, txtFavorite, txtHarder;
     private TextView[] txtDiff = new TextView[3];
     private Spinner spinnerTime;
+    private CheckBox chkHide;
 
     private MyDBHelper myDBHelper;
     private SQLiteDatabase sqlDB;
@@ -76,6 +79,7 @@ public class SettingActivity extends AppCompatActivity{
         txtAll = findViewById(R.id.txtAll);
         txtFavorite = findViewById(R.id.txtFavorite);
         txtHarder = findViewById(R.id.txtHarder);
+        chkHide = findViewById(R.id.chkHide);
 
         int temp;
         for (int i = 0; i < txtDiff.length; i++) {
@@ -84,6 +88,14 @@ public class SettingActivity extends AppCompatActivity{
         }
 
         refreshCount();
+        chkHide.setChecked(loadChecked());
+
+        chkHide.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveChecked(isChecked);
+            }
+        });
 
         spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -211,10 +223,56 @@ public class SettingActivity extends AppCompatActivity{
         alertDialog.show();
     }
 
+    public void saveChecked(boolean checked) {
+        FileOutputStream fos = null;
+        String memoData = Boolean.toString(checked);
+        try {
+            fos = openFileOutput("hide_checked.txt", MODE_PRIVATE);
+            fos.write(memoData.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            toast(String.valueOf(e), false);
+        } finally {
+            try {
+                if (fos != null) fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean loadChecked() {
+        boolean result = false;
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput("hide_checked.txt");
+            byte[] memoData = new byte[fis.available()];
+
+            while(fis.read(memoData) != -1) {}
+            result = Boolean.parseBoolean(new String(memoData));
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
     public void loadSetting(int position) {
         FileOutputStream fos = null;
         String memoData = Integer.toString(times[position]);
-        System.out.println(times[position]);
         if (!first_selected) {
             try {
                 fos = openFileOutput("settings.txt", MODE_PRIVATE);
