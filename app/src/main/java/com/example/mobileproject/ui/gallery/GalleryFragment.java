@@ -1,6 +1,7 @@
 package com.example.mobileproject.ui.gallery;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.mobileproject.AddActivity;
 import com.example.mobileproject.MainActivity;
 import com.example.mobileproject.MyDBHelper;
 import com.example.mobileproject.R;
@@ -83,71 +85,8 @@ public class GalleryFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //toast("Opened FAB", false);
-                dialog_view = getLayoutInflater().inflate(R.layout.adddialog, null);
-
-                final Button btnCancel = dialog_view.findViewById(R.id.btnCancel);
-                final Button btnAdd = dialog_view.findViewById(R.id.btnAdd);
-                final EditText edtEnglish = dialog_view.findViewById(R.id.edtEnglish);
-                final EditText edtKorean = dialog_view.findViewById(R.id.edtKorean);
-                final RadioGroup rgGrade = dialog_view.findViewById(R.id.rgGrade);
-                final RadioButton[] rdoGrade = new RadioButton[3];
-
-                int temp;
-                for (int i = 0; i < rdoGrade.length; i++) {
-                    temp = dialog_view.getResources().getIdentifier("rdoGrade"+(i+1), "id", getActivity().getPackageName());
-                    rdoGrade[i] = dialog_view.findViewById(temp);
-                }
-
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String korean = String.valueOf(edtKorean.getText());
-                        String english = String.valueOf(edtEnglish.getText());
-                        String grade;
-
-                        if (korean.equals("") || english.equals("")) {
-                            toast("영어와 한글을 입력해주세요.", false);
-                            return;
-                        }
-
-                        switch (rgGrade.getCheckedRadioButtonId()) {
-                            case R.id.rdoGrade1:
-                                grade = String.valueOf(rdoGrade[0].getText());
-                                break;
-                            case R.id.rdoGrade2:
-                                grade = String.valueOf(rdoGrade[1].getText());
-                                break;
-                            case R.id.rdoGrade3:
-                                grade = String.valueOf(rdoGrade[2].getText());
-                                break;
-                            default:
-                                grade = String.valueOf(rdoGrade[0].getText());
-                        }
-
-                        Word temp_word = new Word(korean, english);
-                        wordList.add(temp_word);
-
-                        saveItem(english, korean, grade);
-
-                        onStart();
-                        alertDialog.dismiss();
-                    }
-                });
-
-                builder = new AlertDialog.Builder(getActivity());
-                builder.setView(dialog_view);
-
-                alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
             }
         });
 

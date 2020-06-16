@@ -282,13 +282,12 @@
                 android:text="버전"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/the110"
-                android:text="1.4.3"
+                android:text="1.4.4"
                 android:textSize="15sp"/>
 
         </LinearLayout>
@@ -303,7 +302,6 @@
                 android:text="제작자 학번"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
@@ -324,7 +322,6 @@
                 android:text="제작자 학년/반"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
@@ -345,7 +342,6 @@
                 android:text="제작자 이름"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
@@ -366,7 +362,6 @@
                 android:text="학교"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
@@ -387,7 +382,6 @@
                 android:text="학과"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
@@ -408,12 +402,11 @@
                 android:text="마지막 수정 날짜/시간"
                 android:fontFamily="@font/the140"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#222222"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2020년 6월 14일 10시 33분"
+                android:text="2020년 6월 16일 10시 6분"
                 android:fontFamily="@font/the110"
                 android:textSize="15sp"/>
 

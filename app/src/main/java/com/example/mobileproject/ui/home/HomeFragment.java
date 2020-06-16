@@ -1,11 +1,11 @@
 package com.example.mobileproject.ui.home;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,11 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.mobileproject.AddActivity;
 import com.example.mobileproject.MainActivity;
 import com.example.mobileproject.MyDBHelper;
 import com.example.mobileproject.R;
@@ -92,71 +92,8 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //toast("Opened FAB", false);
-                dialog_view = getLayoutInflater().inflate(R.layout.adddialog, null);
-
-                final Button btnCancel = dialog_view.findViewById(R.id.btnCancel);
-                final Button btnAdd = dialog_view.findViewById(R.id.btnAdd);
-                final EditText edtEnglish = dialog_view.findViewById(R.id.edtEnglish);
-                final EditText edtKorean = dialog_view.findViewById(R.id.edtKorean);
-                final RadioGroup rgGrade = dialog_view.findViewById(R.id.rgGrade);
-                final RadioButton[] rdoGrade = new RadioButton[3];
-
-                int temp;
-                for (int i = 0; i < rdoGrade.length; i++) {
-                    temp = dialog_view.getResources().getIdentifier("rdoGrade"+(i+1), "id", getActivity().getPackageName());
-                    rdoGrade[i] = dialog_view.findViewById(temp);
-                }
-
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String korean = String.valueOf(edtKorean.getText());
-                        String english = String.valueOf(edtEnglish.getText());
-                        String grade;
-
-                        if (korean.equals("") || english.equals("")) {
-                            toast("영어와 한글을 입력해주세요.", false);
-                            return;
-                        }
-
-                        switch (rgGrade.getCheckedRadioButtonId()) {
-                            case R.id.rdoGrade1:
-                                grade = String.valueOf(rdoGrade[0].getText());
-                                break;
-                            case R.id.rdoGrade2:
-                                grade = String.valueOf(rdoGrade[1].getText());
-                                break;
-                            case R.id.rdoGrade3:
-                                grade = String.valueOf(rdoGrade[2].getText());
-                                break;
-                            default:
-                                grade = String.valueOf(rdoGrade[0].getText());
-                        }
-
-                        Word temp_word = new Word(korean, english);
-                        wordList.add(temp_word);
-
-                        saveItem(english, korean, grade);
-
-                        onStart();
-                        alertDialog.dismiss();
-                    }
-                });
-
-                builder = new AlertDialog.Builder(getActivity());
-                builder.setView(dialog_view);
-
-                alertDialog = builder.create();
-                alertDialog.setCancelable(false);
-                alertDialog.show();
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -775,29 +712,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void saveItem(String english, String korean, String grade) {
-        /*FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-        try {
-            fos = getActivity().openFileOutput("word.obj", Context.MODE_PRIVATE);
-            oos = new ObjectOutputStream(fos);
-            for (int i = 0; i < wordList.size(); i++) oos.writeObject(wordList.get(i));
-            oos.flush();
-            toast(english+"("+korean+") 단어를 추가하였습니다.", true);
-        } catch (IOException e) {
-            e.printStackTrace();
-            toast("단어 추가를 하지 못하였습니다.", false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            toast(String.valueOf(e), false);
-        } finally {
-            try {
-                if (fos != null) fos.close();
-                if (oos != null) oos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
-
         sqlDB = myDBHelper.getWritableDatabase();
 
         String sql = "insert into word values (null, ?, ?, ?, ?, ?);";
