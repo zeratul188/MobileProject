@@ -790,27 +790,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void loadItem() {
-        /*FileInputStream fis = null;
-        ObjectInputStream ois = null;
-
-        try {
-            fis = getActivity().openFileInput("word.obj");
-            ois = new ObjectInputStream(fis);
-            while (wordList.add((Word)ois.readObject()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-            toast(String.valueOf(e), false);
-        } finally {
-            try {
-                if (fis != null) fis.close();
-                if (ois != null) ois.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
-
         sqlDB = myDBHelper.getWritableDatabase();
         cursor = sqlDB.rawQuery("select * from word;", null);
 
